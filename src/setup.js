@@ -1,11 +1,5 @@
 
-// export const SETTINGS = {
-//     numMines: 25,
-//     numRows: 16,
-//     numCols: 30,
-//   };
-  
-  // export const cellSize = `calc(100vmin / ${Math.max(SETTINGS.numRows, SETTINGS.numCols)})`;
+ // export const cellSize = `calc(100vmin / ${Math.max(SETTINGS.numRows, SETTINGS.numCols)})`;
   export const cellSize = `${90 / (Math.max(SETTINGS.numRows, SETTINGS.numCols))})vmin`;
   
   let board = [];
