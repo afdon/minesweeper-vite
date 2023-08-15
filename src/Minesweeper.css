@@ -1,0 +1,65 @@
+:root {
+    --person: "Jack";
+    --cat: "Jarvan";
+    --colour: magenta;
+    --view: hidden;
+    --val: "🟦";
+  }
+
+  body {
+    height: 100%;
+    text-align: center;
+    margin: auto;
+    padding: auto;
+  }
+
+  h1 {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  /* .App {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    
+    flex-direction: column;
+    align-items: center;
+    color: white;
+  } */
+
+  .board {
+    max-width: 100vmin;
+  }
+
+  .cell {
+    font-size: larger;
+    font-weight: bolder;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    user-select: none;
+  }
+  
+  .notrevealed {
+    background: gray;
+    cursor: pointer;
+  }
+  
+  .notrevealed:hover {
+    background: blue;
+  }
+  
+  .revealed {
+    background: red;
+    overflow: hidden;
+  }
+  
+  .revealed:hover {
+    background: darkred;
+  }
+  
+  .flagged {
+    cursor: not-allowed;
+  }
