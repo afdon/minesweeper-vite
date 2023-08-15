@@ -1,20 +1,12 @@
 
-export const SETTINGS = {
-    numMines: 25,
-    numRows: 16,
-    numCols: 30,
-  };
+// export const SETTINGS = {
+//     numMines: 25,
+//     numRows: 16,
+//     numCols: 30,
+//   };
   
   // export const cellSize = `calc(100vmin / ${Math.max(SETTINGS.numRows, SETTINGS.numCols)})`;
   export const cellSize = `${90 / (Math.max(SETTINGS.numRows, SETTINGS.numCols))})vmin`;
-
-
-// export const start = {
-//   initialize: initialize,
-//   createBoard: createBoard,
-//   generateMineIndices: generateMineIndices,
-//   fillMines: fillMines,
-// }
   
   let board = [];
   let mineIndices = [];
