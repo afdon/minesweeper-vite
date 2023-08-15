@@ -1,6 +1,20 @@
 
- // export const cellSize = `calc(100vmin / ${Math.max(SETTINGS.numRows, SETTINGS.numCols)})`;
-  export const cellSize = `${90 / (Math.max(SETTINGS.numRows, SETTINGS.numCols))})vmin`;
+// export const SETTINGS = {
+//     numMines: 25,
+//     numRows: 16,
+//     numCols: 30,
+//   };
+  
+  // export const cellSize = `calc(100vmin / ${Math.max(SETTINGS.numRows, SETTINGS.numCols)})`;
+  // export const cellSize = `${90 / (Math.max(SETTINGS.numRows, SETTINGS.numCols))})vmin`;
+
+
+// export const start = {
+//   initialize: initialize,
+//   createBoard: createBoard,
+//   generateMineIndices: generateMineIndices,
+//   fillMines: fillMines,
+// }
   
   let board = [];
   let mineIndices = [];
@@ -27,10 +41,10 @@
   
   export const generateMineIndices = (numberOfMines, rows, cols) => {
     let totalCells = rows * cols;
+    let mineIndices = []
   
     while (mineIndices.length < numberOfMines) {
-      let mineIdx;
-      mineIdx = getRandomIndex(totalCells);
+      let mineIdx = getRandomIndex(totalCells);
   
       if (!mineIndices.includes(mineIdx)) {
         mineIndices.push(mineIdx);
@@ -40,19 +54,18 @@
     return mineIndices;
   };
   
-  export const fillMines = (mineIndices, board) => {
+  export const fillMines = (mineIndices, board, settings) => {
     for (let i = 0; i < mineIndices.length; i++) {
       let mineIdx = mineIndices[i];
-      board[mineIdx] = 10;
+      board[mineIdx] += 10; // += 10??
   
-      incrementNeighbors(mineIdx, SETTINGS.numRows, SETTINGS.numCols);
+      incrementNeighbors(mineIdx, settings.numRows, settings.numCols);
     }
     return board;
   };
   
   export const incrementNeighbors = (mineIdx, rows, cols) => {
     let neighbors = getNeighborsIdx(mineIdx, rows, cols);
-    // console.log("neighbors", neighbors);
     for (let i = 0; i < neighbors.length; i++) {
       let idx = neighbors[i];
       if (typeof board[idx] === "number") {
@@ -64,37 +77,29 @@
   export const getNeighborsIdx = (index, rows, cols) => {
     const rowIdx = Math.floor(index / cols);
     const colIdx = index % cols;
-    let north = cellIndex(rowIdx - 1, colIdx, rows, cols);
-    let east = cellIndex(rowIdx, colIdx + 1, rows, cols);
-    let south = cellIndex(rowIdx + 1, colIdx, rows, cols);
-    let west = cellIndex(rowIdx, colIdx - 1, rows, cols);
-    let northeast = cellIndex(rowIdx - 1, colIdx + 1, rows, cols);
-    let northwest = cellIndex(rowIdx - 1, colIdx - 1, rows, cols);
-    let southeast = cellIndex(rowIdx + 1, colIdx + 1, rows, cols);
-    let southwest = cellIndex(rowIdx + 1, colIdx - 1, rows, cols);
   
     const neighbors = {
-      north: north,
-      east: east,
-      south: south,
-      west: west,
-      northeast: northeast,
-      northwest: northwest,
-      southeast: southeast,
-      southwest: southwest,
+      north: cellIndex(rowIdx - 1, colIdx, rows, cols),
+      east: cellIndex(rowIdx, colIdx + 1, rows, cols),
+      south: cellIndex(rowIdx + 1, colIdx, rows, cols),
+      west: cellIndex(rowIdx, colIdx - 1, rows, cols),
+      northeast: cellIndex(rowIdx - 1, colIdx + 1, rows, cols),
+      northwest: cellIndex(rowIdx - 1, colIdx - 1, rows, cols),
+      southeast: cellIndex(rowIdx + 1, colIdx + 1, rows, cols),
+      southwest:  cellIndex(rowIdx + 1, colIdx - 1, rows, cols),
     };
-    //   return neighbors;
+
     return Object.values(neighbors);
   };
   
-  export const initialize = () => {
-    let board = createBoard(SETTINGS.numRows, SETTINGS.numCols);
+  export const initialize = (settings) => {
+    let board = createBoard(settings.numRows, settings.numCols);
     let mineIndices = generateMineIndices(
-        SETTINGS.numMines,
-        SETTINGS.numRows,
-        SETTINGS.numCols
+      settings.numMines,
+      settings.numRows,
+      settings.numCols
     );
-    board = fillMines(mineIndices, board);
+    board = fillMines(mineIndices, board, settings);
     return board;
   };
   
@@ -108,19 +113,19 @@
     });
   }
   
-  export const findConnectedCellsToReveal = (index, board) => {
+  export const findConnectedCellsToReveal = (index, board, settings) => {
       let queue = [index];
       let visited = [];
       let cellsToReveal = [];
   
       let counter = 0;
   
-      while (queue.length > 0 && counter < SETTINGS.numRows * SETTINGS.numCols) {
+      while (queue.length > 0 && counter < settings.numRows * settings.numCols) {
           counter++;
           let curCell = queue.shift();
   
           if (board[curCell] === 0) {
-              let neighbors = getNeighborsIdx(curCell, SETTINGS.numRows, SETTINGS.numCols).slice(0, 4);
+              let neighbors = getNeighborsIdx(curCell, settings.numRows, settings.numCols).slice(0, 4);
               neighbors.forEach(n => {
                   cellsToReveal.push(n);
   

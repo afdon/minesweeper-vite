@@ -1,21 +1,12 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  // SETTINGS as settings,
-  // start,
   findConnectedCellsToReveal,
   getDisplayValues,
   initialize,
 } from "./setup.js";
 import "./Minesweeper.css";
-// import "./styles.module.css";
 
 //////////
-
-let board = initialize();
-
-let display = getDisplayValues(board);
 
 // const getDisplayValue = (element) => {
 //     if (element === 0) { return "" }
@@ -42,6 +33,10 @@ export default function Game() {
   const [flagged, setFlagged] = useState(
     new Array(settings.numMines).fill(false)
   );
+
+  useEffect(() => {
+    console.log('render')
+  })
 
   const toggleFlag = (element, index) => {
     element.preventDefault();
@@ -88,7 +83,7 @@ export default function Game() {
       newRevCells = new Array(settings.numRows * settings.numCols).fill(true);
     } else {
       newRevCells = [...revealedCells];
-      const cellsToReveal = findConnectedCellsToReveal(index, board);
+      const cellsToReveal = findConnectedCellsToReveal(index, board, settings);
       cellsToReveal.forEach((c) => {
         newRevCells[c] = true;
       });
@@ -117,6 +112,11 @@ export default function Game() {
       setGameState("won");
     }
   };
+
+  let board = initialize(settings = {numMines: 40, numRows: 16, numCols: 30 });
+  console.log(board)
+  let display = getDisplayValues(board);
+
 
   return (
     <>
