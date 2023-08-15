@@ -1,28 +1,13 @@
 import { useState, useEffect } from "react";
 import {
-  findConnectedCellsToReveal,
+  // findConnectedCellsToReveal,
   getDisplayValues,
   initialize,
 } from "./setup.js";
 import "./Minesweeper.css";
 
-//////////
-
-// const getDisplayValue = (element) => {
-//     if (element === 0) { return "" }
-//     if (element >= 10) { return "💣" }
-//     if (element > 0 && element < 10) { return element }
-//     if (element < 0) { return " " }
-// };
-
-//////////
-
 export default function Game() {
-  let [settings, setSettings] = useState({
-    numMines: 25,
-    numRows: 16,
-    numCols: 30,
-  }); // changed
+  let [settings, setSettings] = useState({ numMines: 25, numRows: 16, numCols: 30,}); // changed
 
   const [revealedCells, setRevealedCells] = useState(
     new Array(settings.numRows * settings.numCols).fill(false)
@@ -36,7 +21,8 @@ export default function Game() {
 
   useEffect(() => {
     console.log('render')
-  })
+    console.log('board', board)
+  }, [settings])
 
   const toggleFlag = (element, index) => {
     element.preventDefault();
@@ -93,11 +79,38 @@ export default function Game() {
     setRevealedCells(newRevCells);
   };
 
-  // const total = settings.numRows * settings.numCols;
+  const findConnectedCellsToReveal = (index, board, settings) => {
+    let queue = [index];
+    let visited = [];
+    let cellsToReveal = [];
 
-  const getTotal = (settings) => {
-    return settings.numRows * settings.numCols;
-  }
+    let counter = 0;
+
+    while (queue.length > 0 && counter < settings.numRows * settings.numCols) {
+        counter++;
+        let curCell = queue.shift();
+
+        if (board[curCell] === 0) {
+            let neighbors = getNeighborsIdx(curCell, settings.numRows, settings.numCols).slice(0, 4);
+            neighbors.forEach(n => {
+                cellsToReveal.push(n);
+
+                if (n !== null && !visited.includes(n) && board[n] === 0) {
+                    visited.push(n);
+                    queue.push(n);
+                }
+            })
+        }
+    }
+
+    return cellsToReveal;
+}
+
+  const total = settings.numRows * settings.numCols;
+
+  // const getTotal = (settings) => {
+  //   return settings.numRows * settings.numCols;
+  // }
 
   let numRevealed = revealedCells.filter((cell) => cell === true).length;
   let numFlagged = flagged.filter((cell) => cell === true).length;
@@ -106,16 +119,17 @@ export default function Game() {
     console.log("numRevealed", numRevealed);
     console.log("numFlagged", numFlagged);
 
-    let total = getTotal(settings)
+    // let total = getTotal(settings)
 
     if (numRevealed + numFlagged >= total) {
       setGameState("won");
     }
   };
 
-  let board = initialize(settings = {numMines: 40, numRows: 16, numCols: 30 });
+  let board = initialize(settings);
   console.log(board)
   let display = getDisplayValues(board);
+  console.log(display)
 
 
   return (
@@ -124,6 +138,9 @@ export default function Game() {
       {gameState === "won" && <p>You won!</p>}
 
       <div>Mines Left: {settings.numMines - numFlagged}</div>
+      <div>board: {board}</div>
+      <div>display: {display}</div>
+      <div>revealed: {revealedCells}</div>
 
       <div style={{ display: 'flex', flexDirection: 'row', gap: '4', 'justifyContent': 'center', margin: '5px' }} >
         <div>
@@ -195,7 +212,7 @@ export default function Game() {
           margin: "auto",
         }}
       >
-        {display.map((element, index) => (
+        {board.map((element, index) => (
           <GameCell
             key={index}
             index={index}

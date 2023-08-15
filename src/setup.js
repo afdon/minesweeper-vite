@@ -57,7 +57,7 @@
   export const fillMines = (mineIndices, board, settings) => {
     for (let i = 0; i < mineIndices.length; i++) {
       let mineIdx = mineIndices[i];
-      board[mineIdx] += 10; // += 10??
+      board[mineIdx] = 10; // += 10??
   
       incrementNeighbors(mineIdx, settings.numRows, settings.numCols);
     }
@@ -113,29 +113,29 @@
     });
   }
   
-  export const findConnectedCellsToReveal = (index, board, settings) => {
-      let queue = [index];
-      let visited = [];
-      let cellsToReveal = [];
+  // export const findConnectedCellsToReveal = (index, board, settings) => {
+  //     let queue = [index];
+  //     let visited = [];
+  //     let cellsToReveal = [];
   
-      let counter = 0;
+  //     let counter = 0;
   
-      while (queue.length > 0 && counter < settings.numRows * settings.numCols) {
-          counter++;
-          let curCell = queue.shift();
+  //     while (queue.length > 0 && counter < settings.numRows * settings.numCols) {
+  //         counter++;
+  //         let curCell = queue.shift();
   
-          if (board[curCell] === 0) {
-              let neighbors = getNeighborsIdx(curCell, settings.numRows, settings.numCols).slice(0, 4);
-              neighbors.forEach(n => {
-                  cellsToReveal.push(n);
+  //         if (board[curCell] === 0) {
+  //             let neighbors = getNeighborsIdx(curCell, settings.numRows, settings.numCols).slice(0, 4);
+  //             neighbors.forEach(n => {
+  //                 cellsToReveal.push(n);
   
-                  if (n !== null && !visited.includes(n) && board[n] === 0) {
-                      visited.push(n);
-                      queue.push(n);
-                  }
-              })
-          }
-      }
+  //                 if (n !== null && !visited.includes(n) && board[n] === 0) {
+  //                     visited.push(n);
+  //                     queue.push(n);
+  //                 }
+  //             })
+  //         }
+  //     }
   
-      return cellsToReveal;
-  }
+  //     return cellsToReveal;
+  // }
