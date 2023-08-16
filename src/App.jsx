@@ -133,6 +133,35 @@ function App() {
   //   return cellsToReveal;
   // };
 
+  const findConnectedCellsToReveal = (index, board, settings) => {
+    let queue = [index];
+    let visited = [];
+    let cellsToReveal = [];
+  
+    while (queue.length > 0 && cellsToReveal.length < settings.numRows * settings.numCols) {
+      let curCell = queue.shift();
+      visited.push(curCell); // Mark the current cell as visited
+  
+      if (board[curCell] === 0) {
+        let neighbors = getNeighborsIdx(
+          curCell,
+          settings.numRows,
+          settings.numCols
+        ).slice(0, 4);
+        neighbors.forEach((n) => {
+          if (n !== null && !visited.includes(n) && !queue.includes(n)) {
+            queue.push(n); // Add valid neighbors to the queue
+          }
+        });
+      }
+  
+      cellsToReveal.push(curCell); // Add the current cell to the list of cells to reveal
+    }
+  
+    return cellsToReveal;
+  };
+  
+
   //////
 
   return (
