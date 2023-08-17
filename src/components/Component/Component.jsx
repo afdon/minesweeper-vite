@@ -166,7 +166,7 @@ const Component = () => {
       <div>
         {/* <p>cellsRevealed: {cellsRevealed}</p> */}
         {/* <p className="long">mineIndices: {mineIndices}</p> */}
-        <p className="long">values: {cellValues}</p>
+        {/* <p className="long">values: {cellValues}</p> */}
         {/* <p className="long">board: {board.length}</p> */}
       </div>
       <div>
@@ -209,7 +209,7 @@ const Component = () => {
 
       <div>
         <button onClick={() => toggleRevealAll()}>Reveal All</button>
-        <button onClick={() => shuffle()}>Shuffle</button>
+        {/* <button onClick={() => shuffle()}>Shuffle</button> */}
       </div>
     </>
   );
