@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import './App.css'
+import { createBoard, generateMineIndices } from './functions.js';
+import { fillMines, getNeighborsIdx, incrementNeighbors } from './script.js';
+import './App.css';
 
 function App() {
-  
   const [settings, setSettings] = useState({
     numMines: 25,
     numRows: 16,
@@ -219,14 +220,65 @@ function App() {
         </div>
       </div>
 
-      <Board
-          settings={settings}
-          revealedCells={revealedCells}
-          flaggedCells={flagged}
-          onCellClick={handleCellClick}
-          onFlagToggle={toggleFlag}
-        />
+      {/* <div>{board}</div> */}
+
+      <div
+        className="board"
+        style={{
+          display: 'grid',
+          width: '100vh',
+          height: 'auto',
+          gridTemplateRows: `repeat(${settings.numRows},
+            calc(100vmin / ${Math.max(settings.numRows, settings.numCols)}))`,
+          gridTemplateColumns: `repeat(${settings.numCols},
+            calc(100vmin / ${Math.max(settings.numRows, settings.numCols)}))`,
+          overflow: 'hidden',
+          margin: 'auto',
+        }}
+      >
+        {display.map((element, index) => (
+          <GameCell
+            key={index}
+            index={index}
+            isRevealed={revealedCells[index]}
+            isFlagged={flagged[index]}
+            cellValue={element}
+            onClick={() => handleCellClick(index)}
+            onContextMenu={(event) => toggleFlag(event, index)}
+          />
+        ))}
+      </div>
     </>
   );
+}
 
+export default App;
+
+const GameCell = (props) => {
+  let cn = 'cell';
+
+  if (props.isRevealed) {
+    cn += ' revealed';
+  } else {
+    cn += ' notrevealed';
   }
+
+  if (props.isFlagged) {
+    cn += ' flagged';
+  } else {
+    cn += ' notflagged';
+  }
+
+  return (
+    <div
+      key={props.index}
+      className={cn}
+      onClick={props.onClick}
+      onContextMenu={props.onContextMenu}
+    >
+      {props.isRevealed && props.cellValue}
+      {!props.isRevealed && props.isFlagged && '🚩'}
+      {/* {props.cellValue} */}
+    </div>
+  );
+};
