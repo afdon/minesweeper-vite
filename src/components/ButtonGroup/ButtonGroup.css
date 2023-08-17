@@ -1,16 +1,38 @@
 .buttonGroup {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    max-width: 500px;
-    /* align-items: center; */
-    margin: auto;
-  }
-  
-  .rowsCols {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    /* background-color: blue; */
-  }
-  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 500px;
+  margin: auto;
+}
+
+.mines,
+.rows,
+.cols {
+  border: 1px solid black;
+}
+
+.mines:hover,
+.rows:hover,
+.cols:hover {
+
+}
+
+.buttonGroup button:hover{
+  color: white;
+  background-color: black;
+}
+
+.buttonGroup button {
+  border: 1px solid rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  /* font-size: larger; */
+  font-weight: bold;
+}
+
+.rowsCols {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+}
