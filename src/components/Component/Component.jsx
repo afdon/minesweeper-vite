@@ -8,7 +8,7 @@ import {
   initialize,
 } from './initialize.js';
 // import { data } from '../data.js';
-import './component.css';
+import './Component.css';
 
 const Component = () => {
   let [rows, setRows] = useState(8);
