@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css'
 
-function App() {
+export default function App() {
   
   const [settings, setSettings] = useState({
     numMines: 25,
